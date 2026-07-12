@@ -1,6 +1,6 @@
 packages:
-  - core/*
-  - playgroud
+  - core
+  - playground
 
 catalog:
   html-webpack-plugin: ^5.6.4,

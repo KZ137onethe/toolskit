@@ -1,0 +1,23 @@
+{
+  // 使用 IntelliSense 了解相关属性。
+  // 悬停以查看现有属性的描述。
+  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "debugger javascript",
+      "request": "launch",
+      // 调试文件路径
+      "program": "${file}",
+      // 运行时执行环境
+      "runtimeExecutable": "node",
+      // 调试跳过文件
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node",
+      // 首行端住
+      "stopOnEntry": false,
+      // 打印信息集成在vscode终端
+      "console": "integratedTerminal"
+    }
+  ]
+}
