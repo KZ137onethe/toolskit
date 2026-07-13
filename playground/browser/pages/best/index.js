@@ -1,5 +1,6 @@
 import "./style.scss";
-import { throttle, debounce } from "@code/business";
+import { debounce } from "@toolskit/core/debounce"
+import { throttle } from "@toolskit/core/throttle"
 
 const [boxEl1, boxEl2] = [document.querySelector(".box-1"), document.querySelector(".box-2")];
 
