@@ -1,0 +1,15 @@
+{
+  "name": "@toolskit/core",
+  "version": "1.0.0",
+  "description": "",
+  "exports": {
+    "./*": {
+			"import": "./*.js"
+		}
+  },
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.17.0"
+}
