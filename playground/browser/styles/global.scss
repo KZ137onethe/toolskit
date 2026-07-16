@@ -1,0 +1,23 @@
+// 重置样式
+@use "./reset.scss";
+
+$primary-color: #71afe5;
+$primary-deep-color: #2b88d8;
+// 全局样式
+body {
+  background-color: #eff6fc;
+}
+
+#root {
+  width: calc(100vw - 6rem);
+  min-height: calc(100vh - 2rem);
+  margin: 1rem 3rem;
+}
+
+a {
+  color: $primary-color;
+  text-decoration: none;
+  &:hover {
+    color: $primary-deep-color;
+  }
+}
