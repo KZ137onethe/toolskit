@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -8,23 +8,26 @@
     <title>Document</title>
   </head>
   <body>
-    <fieldset class="box-1">
-      <legend>防抖</legend>
-      <input
-        class="searchIpt"
-        type="search"
-        placeholder="请输入..."
-        value="" />
-      <button class="cancelBtn">取消防抖</button>
-    </fieldset>
+    <div id="root">
+      <fieldset id="debounce-box">
+        <legend>防抖</legend>
+        <input
+          class="searchIpt"
+          type="search"
+          placeholder="请输入..."
+          value="" />
+        <button class="cancelBtn">取消防抖</button>
+        <div class="content"></div>
+      </fieldset>
 
-    <br />
+      <br />
 
-    <fieldset class="box-2">
-      <legend>节流</legend>
-			<span class="point-record">当前鼠标未进入网格</span>
-      <div class="content"></div>
-    </fieldset>
+      <fieldset id="throttle-box">
+        <legend>节流</legend>
+        <span class="point-record">当前鼠标未进入网格</span>
+        <div class="content"></div>
+      </fieldset>
+    </div>
   </body>
   <script type="module"></script>
 </html>

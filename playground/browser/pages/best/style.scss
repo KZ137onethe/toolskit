@@ -1,4 +1,8 @@
-.box-2 {
+#debounce-box {
+	width: fit-content;
+}
+
+#throttle-box {
   width: fit-content;
   > .content {
     $bg-color: #f8f9fa;

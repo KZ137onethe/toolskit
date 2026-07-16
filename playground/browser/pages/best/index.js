@@ -1,48 +1,55 @@
 import "./style.scss";
-import { debounce } from "@toolskit/core/debounce"
-import { throttle } from "@toolskit/core/throttle"
+import { debounce } from "@toolskit/core/debounce";
+import { throttle } from "@toolskit/core/throttle";
 
-const [boxEl1, boxEl2] = [document.querySelector(".box-1"), document.querySelector(".box-2")];
+// 防抖事件
+function debounceEvent() {
+  const debounceBox = document.querySelector("#debounce-box");
 
-// 防抖
-(() => {
-  const [searchInput, cancelBtn] = [
-    boxEl1.querySelector("input.searchIpt"),
-    boxEl1.querySelector("button.cancelBtn"),
+  const [inputEl, cancelBtnEl, contentEl] = [
+    debounceBox.querySelector("input.searchIpt"),
+    debounceBox.querySelector("button.cancelBtn"),
+    debounceBox.querySelector(".content"),
   ];
 
-  const searchEvent = debounce(
-    (event) => {
-      console.log("搜索完毕！", Math.floor(Math.random() * 9) + 1);
-      console.log("event: ", event);
-    },
-    2000,
-    {
-      leading: false,
-      trailing: true,
-    },
-  );
+  const event = (e) => {
+    const value = e.target.value;
+    if (!value) {
+      contentEl.innerHTML = "";
+      return;
+    }
+    contentEl.innerHTML = "搜索中...";
+    debounce((event) => {
+      contentEl.innerHTML = `搜索结果为：${Math.floor(Math.random() * 9) + 1}`;
+    }, 2000)();
+  };
 
-  searchInput.addEventListener("input", searchEvent);
-  cancelBtn.addEventListener("click", () => {
+  inputEl.addEventListener("input", event);
+  cancelBtnEl.addEventListener("click", () => {
     console.log("cancel");
-    searchEvent.cancel();
+    inputEvent.cancel();
   });
-})();
+}
 
-// 节流
-(() => {
-  const content = boxEl2.querySelector("div.content");
-  const pointSpan = boxEl2.querySelector("span.point-record");
+// 节流事件
+function throttleEvent() {
+  const throttleBox = document.querySelector("#throttle-box");
+  const [pointSpanEl, contentEl] = [
+    throttleBox.querySelector("span.point-record"),
+    throttleBox.querySelector(".content"),
+  ];
 
-  content.addEventListener(
-    "mousemove",
-    throttle((e) => {
-      pointSpan.innerHTML = `x轴坐标为 ${e.offsetX}, y轴坐标为 ${e.offsetY}`;
-    }, 200),
-  );
+  const event = throttle((e) => {
+    pointSpanEl.innerHTML = `x轴坐标为 ${e.offsetX}, y轴坐标为 ${e.offsetY}`;
+  }, 500);
 
-  content.addEventListener("mouseleave", () => {
-    pointSpan.textContent = "鼠标已离开网格区域";
+  contentEl.addEventListener("mousemove", event);
+  contentEl.addEventListener("mouseleave", () => {
+    pointSpanEl.innerHTML = `鼠标已离开网格区域`;
   });
-})();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  debounceEvent();
+  throttleEvent();
+});
