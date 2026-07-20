@@ -157,12 +157,14 @@ class DateEx extends Date {
     switch (unit) {
       case "year": {
         // 设置为今年年初
-        nowDate.setMonth(0, 1).setHours(0, 0, 0, 0);
+        nowDate.setMonth(0, 1);
+        nowDate.setHours(0, 0, 0, 0);
         break;
       }
       case "month": {
         // 设置为月初
-        nowDate.setDate(1).setHours(0, 0, 0, 0);
+        nowDate.setDate(1);
+        nowDate.setHours(0, 0, 0, 0);
         break;
       }
       case "day": {
