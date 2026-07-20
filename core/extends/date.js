@@ -1,5 +1,9 @@
 // 自定义日期方法, 参考 day.js，文档：https://day.js.org/zh-CN/
+
 class DateEx extends Date {
+  /**
+   * @typedef {'second' | 'minute' | 'hour' | 'day' | 'month' | 'year'} UnitType
+   */
   /**
    * 创建 DateEx 实例
    * @param  {...any} args 初始化实例传入的初始值，同Date实例一致
@@ -13,12 +17,12 @@ class DateEx extends Date {
   /**
    * 返回增加一定时间的DateEx对象
    * @param {number} num 增加的单位数字
-   * @param { 'second' | 'minute' | 'hour' | 'day' | 'month' | 'year'} unit 增加的单位
+   * @param {UnitType} unit 增加的单位
    * @returns {DateEx}
    */
   add(num, unit) {
     let nowTimestamp = 0;
-		const date = new Date(this.timestamp);
+    const date = new Date(this.timestamp);
     switch (unit) {
       case "year": {
         nowTimestamp = date.setFullYear(date.getFullYear() + num);
@@ -54,7 +58,7 @@ class DateEx extends Date {
   /**
    * 返回减去一定时间的Date对象
    * @param {number} num 减少的单位数字
-   * @param {'second' | 'minute' | 'hour' | 'day' | 'month' | 'year'} unit 减少的单位
+   * @param {UnitType} unit 减少的单位
    * @returns {DateEx}
    */
   subtract(num, unit) {
@@ -105,47 +109,83 @@ class DateEx extends Date {
   /**
    * DateEx 对象是否在另一个提供的日期时间之前。
    * @param {Date | DateEx} date 比较对象
-   * @param {'second' | 'minute' | 'hour' | 'day' | 'month' | 'year'} unit 比较单位
+   * @param {UnitType} unit 比较单位
    */
   isBefore(date, unit = undefined) {
     // 直接比较Date对象的时间戳
     if (unit === undefined) {
       return this.timestamp < date.valueOf();
     }
-    // 当传入单位的时候要判断比较对象是否小于单位范围的最大值
-    let end = this.add(1, unit).setMilliseconds(0);
-    return date.valueOf() < end;
+    // 两边都推到起始点开始比较
+    return new DateEx(date.valueOf()).startOf(unit) > this.startOf(unit);
   }
 
   /**
    * DateEx 对象是否在另一个提供的日期时间之后。
    * @param { Date | DateEx } date 比较对象
-   * @param {'second' | 'minute' | 'hour' | 'day' | 'month' | 'year'} unit 比较单位
+   * @param {UnitType} unit 比较单位
    */
   isAfter(date, unit = undefined) {
     // 直接比较Date对象的时间戳
     if (unit === undefined) {
       return this.timestamp > date.valueOf();
     }
-    // 当传入单位的时候要判断比较对象是否大于单位范围的最大值
-    let end = this.add(1, unit).setMilliseconds(0);
-    return date.valueOf() > end;
+    // 两边都推到起始点开始比较
+    return new DateEx(date.valueOf()).startOf(unit) < this.startOf(unit);
   }
 
   /**
    * 时间是否相同
    * @param { Date | DateEx } date 比较对象
-   * @param {'second' | 'minute' | 'hour' | 'day' | 'month' | 'year'} unit 比较单位
+   * @param {UnitType} unit 比较单位
    */
   isSame(date, unit = undefined) {
     // 直接比较Date对象的时间戳
     if (unit === undefined) {
       return this.timestamp === date.valueOf();
     }
-    // 当传入单位的时候要判断比较对象是否大于单位范围的最大值
-    let start = this.setMilliseconds(0);
-    let end = this.add(1, unit).setMilliseconds(0);
-    return date.valueOf() > start && date.valueOf() < end;
+    // 两边的起始点是否相同
+    return new DateEx(date.valueOf()).startOf(unit) === this.startOf(unit);
+  }
+
+  /**
+   * 获取某个起始单位的时间戳
+   * @param {UnitType} unit
+   */
+  startOf(unit) {
+    const nowDate = new Date(this.timestamp);
+    switch (unit) {
+      case "year": {
+        // 设置为今年年初
+        nowDate.setMonth(0, 1).setHours(0, 0, 0, 0);
+        break;
+      }
+      case "month": {
+        // 设置为月初
+        nowDate.setDate(1).setHours(0, 0, 0, 0);
+        break;
+      }
+      case "day": {
+        // 设置为当天初始
+        nowDate.setHours(0, 0, 0, 0);
+        break;
+      }
+      case "hour": {
+        // 设置为这个时辰刚开始
+        nowDate.setMinutes(0, 0, 0);
+        break;
+      }
+      case "minute": {
+        // 设置为这一分刚开始
+        nowDate.setSeconds(0, 0);
+        break;
+      }
+      case "second": {
+        nowDate.setMilliseconds(0);
+        break;
+      }
+    }
+    return nowDate.valueOf();
   }
 }
 
@@ -153,4 +193,4 @@ const d = new DateEx();
 console.log(d.format("YYYY-MM-DD HH:mm:ss"));
 console.log(d.add(2, "year").subtract(2, "month").format());
 console.log(d.format("YYYY-MM-DD HH:mm:ss"));
-console.log(d.isSame(new Date(), "minute"));
+console.log(d.isBefore(new Date()));
