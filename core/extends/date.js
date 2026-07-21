@@ -100,6 +100,21 @@ class DateEx extends Date {
     });
   }
 
+  /**
+   * 返回指定单位下两个日期时间之间的差异。
+   * @param {string | Date | DateEx } date
+   * @param {UnitType} unit
+   * @returns {number}
+   */
+  diff(date, unit) {
+    // 如果时 Date 对象或者 DateEx 对象
+    if (date instanceof Date) {
+    }
+    // 如果是普通的字符串
+    else if (typeof date === "string") {
+    }
+  }
+
   // 是否是闰年
   isLeapYear(year) {
     return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
@@ -112,12 +127,13 @@ class DateEx extends Date {
    * @param {UnitType} unit 比较单位
    */
   isBefore(date, unit = undefined) {
+    const timestamp = date.valueOf();
     // 直接比较Date对象的时间戳
     if (unit === undefined) {
-      return this.timestamp < date.valueOf();
+      return this.timestamp < timestamp;
     }
     // 两边都推到起始点开始比较
-    return new DateEx(date.valueOf()).startOf(unit) > this.startOf(unit);
+    return new DateEx(timestamp).startOf(unit) > this.startOf(unit); // ? 比较时会各自调用其 valueOf() 方法
   }
 
   /**
@@ -126,12 +142,13 @@ class DateEx extends Date {
    * @param {UnitType} unit 比较单位
    */
   isAfter(date, unit = undefined) {
+    const timestamp = date.valueOf();
     // 直接比较Date对象的时间戳
     if (unit === undefined) {
-      return this.timestamp > date.valueOf();
+      return this.timestamp > timestamp;
     }
     // 两边都推到起始点开始比较
-    return new DateEx(date.valueOf()).startOf(unit) < this.startOf(unit);
+    return new DateEx(timestamp).startOf(unit) < this.startOf(unit); // ? 比较时会各自调用其 valueOf() 方法
   }
 
   /**
@@ -140,17 +157,19 @@ class DateEx extends Date {
    * @param {UnitType} unit 比较单位
    */
   isSame(date, unit = undefined) {
+    const timestamp = date.valueOf();
     // 直接比较Date对象的时间戳
     if (unit === undefined) {
-      return this.timestamp === date.valueOf();
+      return this.timestamp === timestamp;
     }
     // 两边的起始点是否相同
-    return new DateEx(date.valueOf()).startOf(unit) === this.startOf(unit);
+    return new DateEx(timestamp).startOf(unit) == this.startOf(unit); // ? 比较时会各自调用其 valueOf() 方法
   }
 
   /**
-   * 获取某个起始单位的时间戳
+   * 获取该DateEx对象某个单位的起始DateEx对象
    * @param {UnitType} unit
+   * @returns {DateEx}
    */
   startOf(unit) {
     const nowDate = new Date(this.timestamp);
@@ -187,7 +206,18 @@ class DateEx extends Date {
         break;
       }
     }
-    return nowDate.valueOf();
+    return new DateEx(nowDate.valueOf());
+  }
+
+  /**
+   * 获取该DateEx对象某个单位的末尾DateEx对象
+   * @param {UnitType} unit
+   * @returns {DateEx}
+   */
+  endOf(unit) {
+    const nextStart = this.add(1, unit).startOf(unit);
+    const endTimestamp = nextStart.valueOf() - 1;
+    return new DateEx(endTimestamp);
   }
 }
 
@@ -195,4 +225,4 @@ const d = new DateEx();
 console.log(d.format("YYYY-MM-DD HH:mm:ss"));
 console.log(d.add(2, "year").subtract(2, "month").format());
 console.log(d.format("YYYY-MM-DD HH:mm:ss"));
-console.log(d.isBefore(new Date()));
+console.log(d.endOf("year").format());
