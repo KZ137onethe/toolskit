@@ -102,17 +102,70 @@ class DateEx extends Date {
 
   /**
    * 返回指定单位下两个日期时间之间的差异。
-   * @param {string | Date | DateEx } date
-   * @param {UnitType} unit
+   * @param {string | Date | DateEx } date 比较日期
+   * @param {UnitType} unit 比较的时间单位
+   * @param {boolean} decimal 是否包含小数
    * @returns {number}
    */
-  diff(date, unit) {
-    // 如果时 Date 对象或者 DateEx 对象
-    if (date instanceof Date) {
+  diff(date, unit, decimal = false) {
+    let val;
+    let diff,
+      maxDate,
+      minDate,
+      timestamp = 0;
+    // 如果是字符串，默认直接使用Date对象实例化（底层会调用Date.parse做解析）
+    if (typeof date === "string") {
+      if (Date.parse(date) === NaN) throw new Error("Invalid time format");
+      timestamp = new Date(date).valueOf();
+    } else if (date instanceof Date) {
+      timestamp = date.valueOf();
     }
-    // 如果是普通的字符串
-    else if (typeof date === "string") {
+    // 如果是 Date 对象或者 DateEx 对象
+    else {
+      throw new Error(`Invalid pass parameter: "${date}"`);
     }
+    const obj = {
+      second: 1000,
+      get minute() {
+        return this.second * 60;
+      },
+      get hour() {
+        return this.minute * 60;
+      },
+      get day() {
+        return this.hour * 24;
+      },
+    };
+    diff = this.timestamp - timestamp;
+    maxDate = new DateEx(Math.max(this.timestamp, timestamp));
+    minDate = new DateEx(Math.min(this.timestamp, timestamp));
+    if (unit === "year") {
+      // ? 比较年的时候，是比较月份的1/12数值
+      val = Number(Number(this.diff(date, "month", true) / 12).toFixed(15));
+    } else if (unit === "month") {
+      // ! 因为每个月天数不一样,不能用时间戳来计算
+      // 差异 = 月份差 + (较大的时间的时间戳 - 虚拟对齐时间戳) / (下一个月对齐点 - 虚拟对齐时间戳)
+      const _date = new Date(timestamp);
+      const diffYear = this.getFullYear() - _date.getFullYear();
+      // 整数部分
+      const diffMoth = diffYear * 12 + (this.getMonth() - _date.getMonth());
+      // 小数部分 = (较大的时间的时间戳 - 虚拟对齐时间戳) / (下一个月对齐点 - 虚拟对齐时间戳)
+      const decimalPart = Number(
+        (maxDate.valueOf() - minDate.add(diffMoth, "month").valueOf()) /
+          (minDate.add(diffMoth + 1, "month").valueOf() - minDate.add(diffMoth, "month").valueOf()),
+      ).toFixed(15);
+      val = diffMoth + Number(decimalPart);
+    } else {
+      // 默认保留15位小数
+      val = Number(diff / obj[unit]).toFixed(15);
+    }
+
+    // 没有指定单位,直接返回时间戳
+    if (unit === undefined) return diff;
+    // decimal为false时,不保留小数部分
+    if (decimal === false) return Math.trunc(val);
+    // 直接返回小数部分
+    return val;
   }
 
   // 是否是闰年
@@ -226,3 +279,4 @@ console.log(d.format("YYYY-MM-DD HH:mm:ss"));
 console.log(d.add(2, "year").subtract(2, "month").format());
 console.log(d.format("YYYY-MM-DD HH:mm:ss"));
 console.log(d.endOf("year").format());
+console.log(d.diff("2025-06-25 15:23:00", "year", true));
