@@ -1,5 +1,16 @@
 // 自定义日期方法, 参考 day.js，文档：https://day.js.org/zh-CN/
-
+// TODO: 待实现
+// clone 复制出一个当前对象
+// isValid 表示 DateEx 的日期是否通过校验
+/** extend 支持扩展插件, 文档参考：https://day.js.org/docs/zh-CN/plugin/plugin
+ * minmax 插件
+ * 		max 接受传入多个 DateEx 实例或一个数组, 返回最大的
+ * 		min 接受传入多个 DateEx 实例或一个数组, 返回最小的
+ * toObject 插件
+ * 		toObject 返回包含时间信息的 Object
+ */
+// daysInMonth 获取当前月份包含的天数
+// toJSON	序列化为格式的字符串
 class DateEx extends Date {
   /**
    * @typedef {'second' | 'minute' | 'hour' | 'day' | 'month' | 'year'} UnitType
@@ -274,9 +285,20 @@ class DateEx extends Date {
   }
 }
 
+const plugins = {}
+
+export default DateEx
+export {
+	plugins
+}
+
 const d = new DateEx();
 console.log(d.format("YYYY-MM-DD HH:mm:ss"));
 console.log(d.add(2, "year").subtract(2, "month").format());
 console.log(d.format("YYYY-MM-DD HH:mm:ss"));
 console.log(d.endOf("year").format());
 console.log(d.diff("2025-06-25 15:23:00", "year", true));
+
+// 解析 字符串
+const e = new DateEx("2018-04-04T16:00:00.000Z");
+console.log(e.format());
