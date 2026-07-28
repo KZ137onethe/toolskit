@@ -1,16 +1,4 @@
 // 自定义日期方法, 参考 day.js，文档：https://day.js.org/zh-CN/
-// TODO: 待实现
-// clone 复制出一个当前对象
-// isValid 表示 DateEx 的日期是否通过校验
-/** extend 支持扩展插件, 文档参考：https://day.js.org/docs/zh-CN/plugin/plugin
- * minmax 插件
- * 		max 接受传入多个 DateEx 实例或一个数组, 返回最大的
- * 		min 接受传入多个 DateEx 实例或一个数组, 返回最小的
- * toObject 插件
- * 		toObject 返回包含时间信息的 Object
- */
-// daysInMonth 获取当前月份包含的天数
-// toJSON	序列化为格式的字符串
 class DateEx extends Date {
   /**
    * @typedef {'second' | 'minute' | 'hour' | 'day' | 'month' | 'year'} UnitType
@@ -283,21 +271,119 @@ class DateEx extends Date {
     const endTimestamp = nextStart.valueOf() - 1;
     return new DateEx(endTimestamp);
   }
+
+  /**
+   * 复制出一个当前对象
+   * @returns { DateEx }
+   */
+  clone() {
+    return new DateEx(this.timestamp);
+  }
+
+  /**
+   * 表示 DateEx 的日期是否通过校验
+   * @returns {boolean}
+   */
+  isValid() {
+    return this.timestamp === NaN ? false : true;
+  }
+
+  /**
+   * 返回当前日期所在月份的天数
+   * @returns { number }
+   */
+  daysInMonth() {
+    // 获取一个下月月初的虚拟日期
+    let virtualDate = new DateEx(this.timestamp).add(1, "month");
+    virtualDate.setDate(1);
+    virtualDate.setHours(0, 0, 0, 0);
+    return new Date(virtualDate.valueOf() - 1).getDate();
+  }
+
+  /**
+   * 插件扩展方法
+   * @param {Function} plugin 插件函数
+   * @param {any} opt 额外参数
+   * @returns { typeof DateEx }
+   */
+  static extend(plugin, opt) {
+    if (!plugin.$i) {
+      plugin(opt, DateEx);
+      plugin.$i = true;
+    }
+    return DateEx;
+  }
 }
 
-const plugins = {}
+// 自定义 extend 支持扩展插件, 文档参考：https://day.js.org/docs/zh-CN/plugin/plugin
+function extend() {
+  // minmax 插件
+  const minmax = (opt, d) => {
+    const sortBy = (dates, method) => {
+      // 保证 dates 是一个数组或者是一个只有一个数组元素的数组，且要求所有的子元素是一个 Date
+      if (
+        !(dates instanceof Array) ||
+        (dates instanceof Array && !dates.every((date) => date instanceof Date)) ||
+        (dates[0] instanceof Array && !dates[0].every((date) => date instanceof Date))
+      ) {
+        return null;
+      }
 
-export default DateEx
-export {
-	plugins
+      if (dates[0] instanceof Array) {
+        dates = dates.flat();
+      }
+      // 将所有元素都转化为 DateEx
+      const $dates = dates.map((date) => new d(date.valueOf()));
+
+      let result = $dates[0];
+      let idx = 0;
+      for (let [i, date] of $dates.slice(1).entries()) {
+        if (date[method](result)) {
+          result = date;
+          idx = i + 1;
+        }
+      }
+      return dates[idx];
+    };
+
+    /** min 接受传入多个DateEx实例或者Date实例或一个数组, 返回最小的
+     *
+     * @returns { DateEx | Date }
+     */
+    d.prototype.min = function () {
+      const args = Array.prototype.slice.call(arguments, 0);
+      return sortBy(args, "isBefore");
+    };
+    // max 接受传入多个DateEx实例或者Date实例或一个数组, 返回最大的
+    d.prototype.max = function () {
+      const args = Array.prototype.slice.call(arguments, 0);
+      return sortBy(args, "isAfter");
+    };
+  };
+
+  // TODO：toObject 插件
+  // 		toObject 返回包含时间信息的 Object
+  const toObject = () => {};
+
+  return {
+    minmax,
+    toObject,
+  };
 }
 
+export default DateEx;
+export { extend };
+
+const { minmax } = extend();
+DateEx.extend(minmax);
 const d = new DateEx();
 console.log(d.format("YYYY-MM-DD HH:mm:ss"));
 console.log(d.add(2, "year").subtract(2, "month").format());
 console.log(d.format("YYYY-MM-DD HH:mm:ss"));
 console.log(d.endOf("year").format());
 console.log(d.diff("2025-06-25 15:23:00", "year", true));
+console.log(d.daysInMonth());
+console.log(d.max(new DateEx("2023-06-25"), new Date("2025-10-21")));
 
 // 解析 字符串
 const e = new DateEx("2018-04-04T16:00:00.000Z");
