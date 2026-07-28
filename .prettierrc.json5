@@ -41,5 +41,5 @@
   /*不格式化嵌入在文件中的引用代码*/
   embeddedLanguageFormatting: "off",
   /*在HTML、Vue和JSX中强制每行使用单个属性。*/
-  singleAttributePerLine: true,
+  singleAttributePerLine: false,
 }
