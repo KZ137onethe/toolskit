@@ -5,23 +5,22 @@
  * @returns 克隆后的对象
  */
 function _deepClone(origin, target) {
-  var tar = target || {}
-  var toStr = Object.prototype.toString
-  var arrType = "[object Array]"
+  var tar = target || {};
+  var toStr = Object.prototype.toString;
+  var arrType = "[object Array]";
 
   for (let key in origin) {
     if (origin.hasOwnProperty(key)) {
       if (typeof origin[key] === "object" && origin[key] !== null) {
-        tar[key] = toStr.call(origin[key]) === arrType ? [] : {}
-        _deepClone(origin[key], tar[key])
+        tar[key] = toStr.call(origin[key]) === arrType ? [] : {};
+        _deepClone(origin[key], tar[key]);
       } else {
-        tar[key] = origin[key]
+        tar[key] = origin[key];
       }
     }
   }
-  return tar
+  return tar;
 }
-
 
 /**
  * ES6普适型深度克隆
@@ -33,21 +32,21 @@ function _deepClone(origin, target) {
  */
 function deepClone(origin) {
   if (origin == undefined || typeof origin !== "object") {
-    return origin
+    return origin;
   }
   if (origin instanceof Date) {
-    return origin
+    return origin;
   }
   if (origin instanceof RegExp) {
-    return origin
+    return origin;
   }
-  const target = new origin.constructor()
+  const target = new origin.constructor();
   for (let key in origin) {
     if (origin.hasOwnProperty(key)) {
-      target[key] = deepClone(origin[key])
+      target[key] = deepClone(origin[key]);
     }
   }
-  return target
+  return target;
 }
 
 /**
@@ -61,26 +60,26 @@ function deepClone(origin) {
  */
 function superDeepClone(origin, hashMap = new WeakMap()) {
   if (origin == undefined || typeof origin !== "object") {
-    return origin
+    return origin;
   }
   if (origin instanceof Date) {
-    return origin
+    return origin;
   }
   if (origin instanceof RegExp) {
-    return origin
+    return origin;
   }
-  const hashKey = hashMap.get(origin)
+  const hashKey = hashMap.get(origin);
   if (hashKey) {
-    return hashKey
+    return hashKey;
   }
-  const target = new origin.constructor()
-  hashMap.set(origin, target)
+  const target = new origin.constructor();
+  hashMap.set(origin, target);
   for (let k in origin) {
     if (origin.hasOwnProperty(k)) {
-      target[k] = superDeepClone(origin[k], hashMap)
+      target[k] = superDeepClone(origin[k], hashMap);
     }
   }
-  return target
+  return target;
 }
 
 /**
@@ -96,7 +95,7 @@ function superDeepClone(origin, hashMap = new WeakMap()) {
  *    1. 不支持函数、DOM节点、原型链
  */
 function modernDeepClone(origin) {
-  return structuredClone(origin)
+  return structuredClone(origin);
 }
 
-export { _deepClone, deepClone, superDeepClone, modernDeepClone }
+export { _deepClone, deepClone, superDeepClone, modernDeepClone };

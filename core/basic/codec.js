@@ -8,6 +8,4 @@ import { judgeEnv } from "../business/environment";
 function codec(data, format) {
   // 如果不是浏览器环境之间返回
   if (!judgeEnv("browser")) return;
-
-	
 }
