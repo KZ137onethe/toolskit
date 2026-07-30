@@ -3,9 +3,10 @@ packages:
   - playground/*
 
 catalog:
-  '@rsbuild/core': 2.1.5
-  '@rsbuild/plugin-sass': 2.0.1
+  "@rsbuild/core": 2.1.5
+  "@rsbuild/plugin-sass": 2.0.1
   jsdoc: ^4.0.5
+  prettier: ^3.9.6
   vitest: ^4.1.10
 
 catalogMode: prefer
