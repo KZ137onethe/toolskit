@@ -3,8 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "exports": {
+    ".": {
+      "import": "./index.js",
+      "default": "./index.js"
+    },
     "./*": {
-      "import": "./*.js"
+      "import": "./*.js",
+      "default": "./*.js"
     }
   },
   "scripts": {},

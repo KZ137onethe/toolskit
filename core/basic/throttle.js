@@ -89,8 +89,4 @@ function throttle(fn, interval, { leading = true, trailing = false } = {}) {
   return _throttle;
 }
 
-module.exports = {
-  baseThrottle,
-  _throttle,
-  throttle,
-};
+export { baseThrottle, _throttle, throttle };

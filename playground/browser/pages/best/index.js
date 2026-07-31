@@ -1,6 +1,6 @@
 import "./style.scss";
-import { debounce } from "@toolskit/core/debounce";
-import { throttle } from "@toolskit/core/throttle";
+import { debounce } from "@toolskit/core";
+import { throttle } from "@toolskit/core";
 
 // 防抖事件
 function debounceEvent() {
