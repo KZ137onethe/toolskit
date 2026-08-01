@@ -350,20 +350,32 @@ function extend() {
      *
      * @returns { DateEx | Date }
      */
-    d.prototype.min = function () {
+    d.min = function () {
       const args = Array.prototype.slice.call(arguments, 0);
       return sortBy(args, "isBefore");
     };
     // max 接受传入多个DateEx实例或者Date实例或一个数组, 返回最大的
-    d.prototype.max = function () {
+    d.max = function () {
       const args = Array.prototype.slice.call(arguments, 0);
       return sortBy(args, "isAfter");
     };
   };
 
-  // TODO：toObject 插件
-  // 		toObject 返回包含时间信息的 Object
-  const toObject = () => {};
+  // toObject 返回包含时间信息的 Object
+  const toObject = (opt, d) => {
+    d.prototype.toObject = function () {
+      const nowDate = new Date(this.timestamp);
+      return {
+        year: nowDate.getFullYear(),
+        month: nowDate.getMonth() + 1,
+        day: nowDate.getDate(),
+        hour: nowDate.getHours(),
+        minute: nowDate.getMinutes(),
+        second: nowDate.getSeconds(),
+        milliseconds: nowDate.getMilliseconds(),
+      };
+    };
+  };
 
   return {
     minmax,
@@ -374,8 +386,8 @@ function extend() {
 export default DateEx;
 export { extend };
 
-const { minmax } = extend();
-DateEx.extend(minmax);
+const { minmax, toObject } = extend();
+DateEx.extend(minmax).extend(toObject);
 const d = new DateEx();
 console.log(d.format("YYYY-MM-DD HH:mm:ss"));
 console.log(d.add(2, "year").subtract(2, "month").format());
@@ -383,7 +395,8 @@ console.log(d.format("YYYY-MM-DD HH:mm:ss"));
 console.log(d.endOf("year").format());
 console.log(d.diff("2025-06-25 15:23:00", "year", true));
 console.log(d.daysInMonth());
-console.log(d.max(new DateEx("2023-06-25"), new Date("2025-10-21")));
+console.log(DateEx.max(new DateEx("2023-06-25"), new Date("2025-10-21")));
+console.log(d.toObject())
 
 // 解析 字符串
 const e = new DateEx("2018-04-04T16:00:00.000Z");
