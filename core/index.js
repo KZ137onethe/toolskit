@@ -1,5 +1,5 @@
 export { baseDebounce, _debounce, debounce } from "./basic/debounce.js";
-export { _deepClone, deepClone, superDeepClone, modernDeepClone } from "./basic/deepClone.js";
+export { _deepClone, deepClone, superDeepClone, modernDeepClone } from "./basic/deep_clone.js";
 export { baseThrottle, _throttle, throttle } from "./basic/throttle.js";
 export { range, generateArray } from "./basic/generator.js";
 
