@@ -16,6 +16,7 @@
     "@rsbuild/plugin-sass": "catalog:",
     "jsdoc": "catalog:",
     "prettier": "catalog:",
+    "vite": "catalog:",
     "vitest": "catalog:"
   },
   "volta": {
