@@ -2,7 +2,12 @@
  * n 秒后在执行该事件，若在 n 秒内被重复触发，则重新计时
  */
 
-// 简易版防抖函数
+/**
+ * 基础版防抖函数（传递返回的函数参数无效！）
+ * @param {Function} fn 控制防抖的函数
+ * @param {number} delay 时间间隔
+ * @returns {Function}
+ */
 function baseDebounce(fn, delay) {
   let timer = null;
   const _debounce = () => {
@@ -15,7 +20,12 @@ function baseDebounce(fn, delay) {
   return _debounce;
 }
 
-// 标准版防抖函数
+/**
+ * 标准版防抖函数（传递返回的函数参数有效）
+ * @param {Function} fn 控制防抖的函数
+ * @param {number} delay 时间间隔
+ * @returns {Function}
+ */
 function _debounce(fn, delay) {
   let timer = null;
   const _debounce = function (...args) {
@@ -28,10 +38,12 @@ function _debounce(fn, delay) {
   return _debounce;
 }
 
-/** 扩展版防抖函数
- * 1. 支持取消防抖，在停止高频率事件后，在0 ~ delay ms内可以取消防抖操作
- * 2. 立即执行，在首次执行高频率事件时，立即执行一次，然后再执行防抖操作，然后随着执行高频率事件循环往复
- * 3. 返回值，在防抖函数执行完毕后返回fn函数的结果
+/**
+ * 扩展版防抖函数
+ * @param {Function.<>} fn 控制防抖的函数
+ * @param {number} delay 时间间隔
+ * @param {boolean} immediate 首次是否立即执行防抖函数
+ * @returns {Function & { cancel: () => void }}
  */
 function debounce(fn, delay, immediate = false) {
   let timer = null;

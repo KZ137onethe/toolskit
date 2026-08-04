@@ -2,9 +2,9 @@
  * ES5中的深度克隆
  * @param {Object.<string, any>} origin 原对象
  * @param {undefined | Object.<string, any>} target 原对象会被克隆到该对象中
- * @returns 克隆后的对象
+ * @returns {Object.<string, any>} 克隆后的对象
  */
-function _deepClone(origin, target) {
+function _deep_clone(origin, target) {
   var tar = target || {};
   var toStr = Object.prototype.toString;
   var arrType = "[object Array]";
@@ -13,7 +13,7 @@ function _deepClone(origin, target) {
     if (origin.hasOwnProperty(key)) {
       if (typeof origin[key] === "object" && origin[key] !== null) {
         tar[key] = toStr.call(origin[key]) === arrType ? [] : {};
-        _deepClone(origin[key], tar[key]);
+        _deep_clone(origin[key], tar[key]);
       } else {
         tar[key] = origin[key];
       }
@@ -25,12 +25,10 @@ function _deepClone(origin, target) {
 /**
  * ES6普适型深度克隆
  * @param {Object.<string, any>} origin 原对象
- * @returns 克隆后的对象
- * @summary
- * * 缺点:
- *    1. 无法处理循环引用
+ * @returns {Object.<string, any>} 克隆后的对象
+ * @summary 缺点:	1. 无法处理循环引用
  */
-function deepClone(origin) {
+function deep_clone(origin) {
   if (origin == undefined || typeof origin !== "object") {
     return origin;
   }
@@ -43,7 +41,7 @@ function deepClone(origin) {
   const target = new origin.constructor();
   for (let key in origin) {
     if (origin.hasOwnProperty(key)) {
-      target[key] = deepClone(origin[key]);
+      target[key] = deep_clone(origin[key]);
     }
   }
   return target;
@@ -53,12 +51,10 @@ function deepClone(origin) {
  * ES6通用型深度克隆
  * @param {any} origin 原对象
  * @param {Map.<string, any>} hashMap 记录循环引用
- * @returns 克隆后的对象
- * @summary
- * * 解决:
- *    1. 处理循环引用
+ * @returns {Object.<string, any>} 克隆后的对象
+ * @summary	解决:	1. 处理循环引用
  */
-function superDeepClone(origin, hashMap = new WeakMap()) {
+function super_deep_clone(origin, hashMap = new WeakMap()) {
   if (origin == undefined || typeof origin !== "object") {
     return origin;
   }
@@ -76,7 +72,7 @@ function superDeepClone(origin, hashMap = new WeakMap()) {
   hashMap.set(origin, target);
   for (let k in origin) {
     if (origin.hasOwnProperty(k)) {
-      target[k] = superDeepClone(origin[k], hashMap);
+      target[k] = super_deep_clone(origin[k], hashMap);
     }
   }
   return target;
@@ -94,8 +90,13 @@ function superDeepClone(origin, hashMap = new WeakMap()) {
  * * 缺点:
  *    1. 不支持函数、DOM节点、原型链
  */
-function modernDeepClone(origin) {
+function modern_deep_clone(origin) {
   return structuredClone(origin);
 }
 
-export { _deepClone, deepClone, superDeepClone, modernDeepClone };
+export {
+  _deep_clone,
+  deep_clone,
+  super_deep_clone,
+  modern_deep_clone,
+};

@@ -15,12 +15,13 @@ function* range(start, end) {
  * @param {number} start
  * @param {number} len
  * @param {number} step
+ * @returns {Generator<number>}
  */
-function* generateArray(start, len, step = 1) {
+function* generate_array(start, len, step = 1) {
   while (len--) {
     yield start;
     start += step;
   }
 }
 
-export { range, generateArray };
+export { range, generate_array };

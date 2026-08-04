@@ -11,8 +11,13 @@
  * }
  */
 
-// 基础版
-function baseThrottle(fn, interval) {
+/**
+ * 基础版节流函数（传递返回的函数参数无效！）
+ * @param {Function} fn 需要控制节流的函数
+ * @param {number} interval 时间间隔
+ * @returns {Function}
+ */
+function base_throttle(fn, interval) {
   let startTime = 0;
   const _throttle = function () {
     const nowTime = new Date().getTime();
@@ -25,7 +30,12 @@ function baseThrottle(fn, interval) {
   return _throttle;
 }
 
-// 标准版
+/**
+ * 能用版节流函数（传递返回的函数参数有效）
+ * @param {Function} fn 需要控制节流的函数
+ * @param {number} interval 时间间隔
+ * @returns {Function}
+ */
 function _throttle(fn, interval) {
   let startTime = 0;
   const _throttle = function (...args) {
@@ -39,13 +49,14 @@ function _throttle(fn, interval) {
   return _throttle;
 }
 
-/** 扩展版节流函数
- * 1.对立即执行进行控制
- *  options.leading 为 false 时，第一次执行高频率事件不会触发fn函数，且才开始倒计时，倒计时完毕才会执行fn函数
- * 2.对尾部进行控制
- *  options.trailing 为 true 时，会在最后一次触发高频率事件触发fn函数，怎么判断用户是不是最后一次触发这个非常不好把握
- * 3.节流取消功能
- * 4.节流函数返回值
+/**
+ * 扩展版节流函数
+ * @param {Function} fn 需要控制节流的函数
+ * @param {number} interval 时间间隔
+ * @param {Object} args 控制参数
+ * @param {boolean} args.leading 是否立即执行，不立即执行会被延迟到时间间隔末尾
+ * @param {boolean} args.trailing 是否允许在最后一次触发后，等待间隔结束时再执行一次
+ * @returns {Function & { cancel: () => void }} cancel方法用于取消执行函数
  */
 function throttle(fn, interval, { leading = true, trailing = false } = {}) {
   let startTime = 0;
@@ -89,4 +100,4 @@ function throttle(fn, interval, { leading = true, trailing = false } = {}) {
   return _throttle;
 }
 
-export { baseThrottle, _throttle, throttle };
+export { base_throttle, _throttle, throttle };
