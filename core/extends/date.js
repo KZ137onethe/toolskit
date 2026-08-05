@@ -386,18 +386,18 @@ function extend() {
 export default DateEx;
 export { extend };
 
-const { minmax, toObject } = extend();
-DateEx.extend(minmax).extend(toObject);
-const d = new DateEx();
-console.log(d.format("YYYY-MM-DD HH:mm:ss"));
-console.log(d.add(2, "year").subtract(2, "month").format());
-console.log(d.format("YYYY-MM-DD HH:mm:ss"));
-console.log(d.endOf("year").format());
-console.log(d.diff("2025-06-25 15:23:00", "year", true));
-console.log(d.daysInMonth());
-console.log(DateEx.max(new DateEx("2023-06-25"), new Date("2025-10-21")));
-console.log(d.toObject())
+// const { minmax, toObject } = extend();
+// DateEx.extend(minmax).extend(toObject);
+// const d = new DateEx();
+// console.log(d.format("YYYY-MM-DD HH:mm:ss"));
+// console.log(d.add(2, "year").subtract(2, "month").format());
+// console.log(d.format("YYYY-MM-DD HH:mm:ss"));
+// console.log(d.endOf("year").format());
+// console.log(d.diff("2025-06-25 15:23:00", "year", true));
+// console.log(d.daysInMonth());
+// console.log(DateEx.max(new DateEx("2023-06-25"), new Date("2025-10-21")));
+// console.log(d.toObject())
 
-// 解析 字符串
-const e = new DateEx("2018-04-04T16:00:00.000Z");
-console.log(e.format());
+// // 解析 字符串
+// const e = new DateEx("2018-04-04T16:00:00.000Z");
+// console.log(e.format());

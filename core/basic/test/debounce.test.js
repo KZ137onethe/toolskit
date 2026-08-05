@@ -1,16 +1,16 @@
 import { test, expect, describe, vi } from "vitest";
-import { baseDebounce, _debounce, debounce } from "../debounce";
+import { baseDebounce, _debounce, debounce } from "../debounce.js";
 
-describe("防抖函数测试", () => {
+describe("all debounce function test", () => {
   const testFn = {
     noReturnFn: vi.fn(() => undefined),
     returnFn: vi.fn((a, b) => a + b),
   };
 
-  test("baseDebounce 测试", async () => {
+  test("baseDebounce function test", async () => {
     vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"], shouldAdvanceTime: true });
-    const spyFn = testFn.noReturnFn;
-    const fn = baseDebounce(spyFn, 1000);
+    const spyFn = vi.fn(() => undefined);
+    const fn = baseDebounce(spyFn, 200);
 
     fn();
     expect(spyFn).toHaveBeenCalledTimes(0);
@@ -23,10 +23,10 @@ describe("防抖函数测试", () => {
     expect(spyFn).toHaveBeenCalledTimes(2);
   });
 
-  test("_debounce 测试", async () => {
+  test("_debounce function test", async () => {
     vi.useFakeTimers();
-    const spyFn = vi.spyOn(testFn, "returnFn");
-    const fn = _debounce(spyFn, 1000);
+    const spyFn = vi.fn((a, b) => a + b);
+    const fn = _debounce(spyFn, 200);
 
     fn(1, 2);
     expect(spyFn).toHaveBeenCalledTimes(0);
@@ -41,10 +41,10 @@ describe("防抖函数测试", () => {
     expect(spyFn).toHaveNthReturnedWith(2, 3);
   });
 
-  test("debounce 测试", async () => {
+  test("debounce function test", async () => {
     vi.useFakeTimers();
-    const spyFn = vi.spyOn(testFn, "returnFn");
-    const fn = debounce(spyFn, 1000);
+    const spyFn = vi.fn((a, b) => a + b);
+    const fn = debounce(spyFn, 200);
 
     fn(1, 2);
     expect(spyFn).toHaveBeenCalledTimes(0);
@@ -57,19 +57,24 @@ describe("防抖函数测试", () => {
     await vi.runAllTimersAsync();
     expect(spyFn).toHaveBeenCalledTimes(2);
     expect(spyFn).toHaveNthReturnedWith(2, 3);
+    const promise = fn(1, 2);
+    await vi.advanceTimersToNextTimerAsync();
+    await expect(promise).resolves.toBe(3);
 
     // 测试取消
+    vi.resetAllMocks();
     const cancelFn = fn.cancel;
     fn(1, 2);
     cancelFn();
     await vi.runAllTimersAsync();
-    expect(spyFn).toHaveBeenCalledTimes(2);
+    expect(spyFn).toHaveBeenCalledTimes(0);
 
     // 测试立即触发
+    vi.resetAllMocks();
     const immediateFn = debounce(spyFn, 1000, true);
     immediateFn(1, 2);
-    expect(spyFn).toHaveBeenCalledTimes(3);
+    expect(spyFn).toHaveBeenCalledTimes(1);
     await vi.advanceTimersToNextTimerAsync();
-    expect(spyFn).toHaveBeenCalledTimes(4);
+    expect(spyFn).toHaveBeenCalledTimes(2);
   });
 });
