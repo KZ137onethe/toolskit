@@ -26,19 +26,21 @@ function _deep_clone(origin, target) {
  * ES6普适型深度克隆
  * @param {Object.<string, any>} origin 原对象
  * @returns {Object.<string, any>} 克隆后的对象
- * @summary 缺点:	1. 无法处理循环引用
+ * @summary 缺点:	1. 无法处理循环引用 2. 没有拷贝一些对象，如：RegExp，function等
  */
 function deep_clone(origin) {
   if (origin == undefined || typeof origin !== "object") {
     return origin;
   }
+  const target = new origin.constructor();
+	// 拷贝Date对象（包含其子类）
   if (origin instanceof Date) {
-    return origin;
+    return new origin.constructor(origin.getTime());
   }
   if (origin instanceof RegExp) {
     return origin;
   }
-  const target = new origin.constructor();
+
   for (let key in origin) {
     if (origin.hasOwnProperty(key)) {
       target[key] = deep_clone(origin[key]);
@@ -52,14 +54,14 @@ function deep_clone(origin) {
  * @param {any} origin 原对象
  * @param {Map.<string, any>} hashMap 记录循环引用
  * @returns {Object.<string, any>} 克隆后的对象
- * @summary	解决:	1. 处理循环引用
+ * @summary	解决:	1. 处理循环引用	2. 没有拷贝一些对象，如：RegExp，function等
  */
 function super_deep_clone(origin, hashMap = new WeakMap()) {
   if (origin == undefined || typeof origin !== "object") {
     return origin;
   }
   if (origin instanceof Date) {
-    return origin;
+    return new origin.constructor(origin.getTime());
   }
   if (origin instanceof RegExp) {
     return origin;
@@ -94,9 +96,4 @@ function modern_deep_clone(origin) {
   return structuredClone(origin);
 }
 
-export {
-  _deep_clone,
-  deep_clone,
-  super_deep_clone,
-  modern_deep_clone,
-};
+export { _deep_clone, deep_clone, super_deep_clone, modern_deep_clone };

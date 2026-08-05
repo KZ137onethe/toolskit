@@ -72,10 +72,14 @@ function throttle(fn, interval, { leading = true, trailing = false } = {}) {
         }
         const waitTime = interval - (nowTime - startTime);
         if (waitTime <= 0) {
-          if (timer) clearTimeout(timer);
+          if (timer) {
+            clearTimeout(timer);
+            timer = null;
+          }
           res = fn.apply(this, args);
           startTime = nowTime;
           resolve(res);
+          return;
         }
         // 判断是否尾部执行
         if (trailing && !timer) {
