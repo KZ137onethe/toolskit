@@ -1,6 +1,6 @@
 // @ts-check
 import { defineConfig } from "@rsbuild/core";
-import { pluginSass } from "@rsbuild/plugin-sass";
+import { pluginTailwindcss } from '@rsbuild/plugin-tailwindcss';
 
 import { join } from "node:path";
 
@@ -13,7 +13,7 @@ export default defineConfig({
       best: "./best/index.js",
       codec: "./codec/index.js",
     },
-    preEntry: join(__dirname, "./styles/global.scss"),
+    preEntry: join(__dirname, "./styles/global.css"),
   },
   html: {
     template({ entryName }) {
@@ -26,5 +26,5 @@ export default defineConfig({
       );
     },
   },
-  plugins: [pluginSass()],
+  plugins: [pluginTailwindcss()],
 });

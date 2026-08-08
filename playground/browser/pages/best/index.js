@@ -1,33 +1,34 @@
-import "./style.scss";
-import { debounce } from "@toolskit/core";
-import { throttle } from "@toolskit/core";
+import "./style.css";
+import { debounce, throttle } from "@toolskit/core";
 
 // 防抖事件
 function debounceEvent() {
   const debounceBox = document.querySelector("#debounce-box");
 
   const [inputEl, cancelBtnEl, contentEl] = [
-    debounceBox.querySelector("input.searchIpt"),
-    debounceBox.querySelector("button.cancelBtn"),
+    debounceBox.querySelector("input"),
+    debounceBox.querySelector("button"),
     debounceBox.querySelector(".content"),
   ];
 
-  const event = (e) => {
+  let fn = debounce(() => {
+    contentEl.innerHTML = `搜索结果为：${Math.floor(Math.random() * 9) + 1}`;
+  }, 2000);
+
+  const event = async (e) => {
     const value = e.target.value;
     if (!value) {
       contentEl.innerHTML = "";
       return;
     }
     contentEl.innerHTML = "搜索中...";
-    debounce((event) => {
-      contentEl.innerHTML = `搜索结果为：${Math.floor(Math.random() * 9) + 1}`;
-    }, 2000)();
+    await fn();
   };
 
   inputEl.addEventListener("input", event);
   cancelBtnEl.addEventListener("click", () => {
-    console.log("cancel");
-    inputEvent.cancel();
+    fn.cancel();
+    contentEl.innerHTML = "";
   });
 }
 
@@ -35,7 +36,7 @@ function debounceEvent() {
 function throttleEvent() {
   const throttleBox = document.querySelector("#throttle-box");
   const [pointSpanEl, contentEl] = [
-    throttleBox.querySelector("span.point-record"),
+    throttleBox.querySelector("span"),
     throttleBox.querySelector(".content"),
   ];
 

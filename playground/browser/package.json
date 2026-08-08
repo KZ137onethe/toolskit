@@ -10,7 +10,8 @@
   },
   "devDependencies": {
     "@rsbuild/core": "catalog:",
-    "@rsbuild/plugin-sass": "catalog:"
+    "@rsbuild/plugin-tailwindcss": "catalog:",
+    "tailwindcss": "catalog:"
   },
   "dependencies": {
     "@toolskit/core": "workspace:*"

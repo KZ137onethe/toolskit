@@ -6,21 +6,21 @@
     <title>Document</title>
   </head>
   <body>
-    <div id="root">
-      <fieldset class="w-full" id="debounce-box">
-        <legend>防抖</legend>
-        <input class="searchIpt" type="search" placeholder="请输入..." value="" />
-        <button class="cancelBtn">取消防抖</button>
+    <div id="app">
+      <div class="card" id="debounce-box">
+        <h3>防抖</h3>
+        <input type="search" placeholder="请输入..." value="" />
+        <button>取消防抖</button>
         <div class="content"></div>
-      </fieldset>
+      </div>
 
       <br />
 
-      <fieldset id="throttle-box">
-        <legend>节流</legend>
-        <span class="point-record">当前鼠标未进入网格</span>
+      <div class="card" id="throttle-box">
+        <h3>节流</h3>
+        <span>当前鼠标未进入网格</span>
         <div class="content"></div>
-      </fieldset>
+      </div>
     </div>
   </body>
   <script type="module"></script>
