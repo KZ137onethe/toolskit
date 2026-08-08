@@ -43,7 +43,7 @@ function _debounce(fn, delay) {
  * @param {Function.<>} fn 控制防抖的函数
  * @param {number} delay 时间间隔
  * @param {boolean} immediate 首次是否立即执行防抖函数
- * @returns {Function & { cancel: () => void }}
+ * @returns {Promise<Function> & { cancel: () => void }>}
  */
 function debounce(fn, delay, immediate = false) {
   let timer = null;

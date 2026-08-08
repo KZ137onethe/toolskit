@@ -56,7 +56,7 @@ function _throttle(fn, interval) {
  * @param {Object} args 控制参数
  * @param {boolean} args.leading 是否立即执行，不立即执行会被延迟到时间间隔末尾
  * @param {boolean} args.trailing 是否允许在最后一次触发后，等待间隔结束时再执行一次
- * @returns {Function & { cancel: () => void }} cancel方法用于取消执行函数
+ * @returns {Promise<Function> & { cancel: () => void }} cancel方法用于取消执行函数
  */
 function throttle(fn, interval, { leading = true, trailing = false } = {}) {
   let startTime = 0;
