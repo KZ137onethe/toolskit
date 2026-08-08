@@ -33,7 +33,7 @@ function deep_clone(origin) {
     return origin;
   }
   const target = new origin.constructor();
-	// 拷贝Date对象（包含其子类）
+  // 拷贝Date对象（包含其子类）
   if (origin instanceof Date) {
     return new origin.constructor(origin.getTime());
   }

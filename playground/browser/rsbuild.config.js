@@ -1,6 +1,6 @@
 // @ts-check
 import { defineConfig } from "@rsbuild/core";
-import { pluginTailwindcss } from '@rsbuild/plugin-tailwindcss';
+import { pluginTailwindcss } from "@rsbuild/plugin-tailwindcss";
 
 import { join } from "node:path";
 

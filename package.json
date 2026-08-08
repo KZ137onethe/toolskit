@@ -13,11 +13,13 @@
   "license": "ISC",
   "devDependencies": {
     "@rsbuild/core": "catalog:",
-    "@rsbuild/plugin-sass": "catalog:",
     "jsdoc": "catalog:",
     "prettier": "catalog:",
-    "vite": "catalog:",
+    "prettier-plugin-tailwindcss": "catalog:",
     "vitest": "catalog:"
+  },
+  "overrides": {
+    "vite": "^8.2.1"
   },
   "volta": {
     "node": "22.19.0",

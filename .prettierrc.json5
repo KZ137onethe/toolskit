@@ -42,4 +42,8 @@
   embeddedLanguageFormatting: "off",
   /*在HTML、Vue和JSX中强制每行使用单个属性。*/
   singleAttributePerLine: false,
+  /*使用插件*/
+  plugins: ["prettier-plugin-tailwindcss"],
+	/*填入你项目引入 @import "tailwindcss" 的主 CSS 文件路径*/
+  tailwindStylesheet: "./playground/browser/styles/global.css",
 }

@@ -3,12 +3,12 @@ packages:
   - playground/*
 
 catalog:
-  '@rsbuild/core': 2.1.5
-  '@rsbuild/plugin-tailwindcss': ^2.0.3
+  "@rsbuild/core": 2.1.5
+  "@rsbuild/plugin-tailwindcss": ^2.0.3
   jsdoc: ^4.0.5
   prettier: ^3.9.6
+  prettier-plugin-tailwindcss: 0.8.1
   tailwindcss: ^4.3.3
-  vite: 6.1.0
   vitest: ^4.1.10
 
 catalogMode: prefer

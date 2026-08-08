@@ -6,4 +6,6 @@
 
 命名规范：**蛇形命名法**，如：`regexp_test.js`
 
-Node.js版本管理: volta
+Node.js版本管理: `volta`
+
+需要`volta`全局安装`vite`，且版本大于`@6.1.0`

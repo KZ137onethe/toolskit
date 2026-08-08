@@ -2,7 +2,7 @@
 
 #throttle-box {
   .content {
-    @apply w-200 h-100 border border-gray-400 bg-transparent cursor-pointer;
+    @apply h-100 w-200 cursor-pointer border border-gray-400 bg-transparent;
     background-size: 20px 20px;
     background-image:
       linear-gradient(90deg, rgba(200, 200, 200, 0.3) 1px, transparent 1px),

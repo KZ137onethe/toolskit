@@ -40,7 +40,7 @@ function _debounce(fn, delay) {
 
 /**
  * 扩展版防抖函数
- * @param {Function.<>} fn 控制防抖的函数
+ * @param {Function} fn 控制防抖的函数
  * @param {number} delay 时间间隔
  * @param {boolean} immediate 首次是否立即执行防抖函数
  * @returns {Promise<Function> & { cancel: () => void }>}

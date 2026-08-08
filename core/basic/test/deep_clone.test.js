@@ -62,8 +62,8 @@ describe("all deep_clone function test", () => {
     expect(cloned.fn).toBe(src.fn);
     expect(cloned.a).not.toBe(src.a);
     expect(cloned.b).not.toBe(src.b);
-		expect(cloned.a.b).toBe(cloned.b);
-		expect(cloned.b.a).toBe(cloned.a);
+    expect(cloned.a.b).toBe(cloned.b);
+    expect(cloned.b.a).toBe(cloned.a);
   });
 
   if (typeof structuredClone === "function") {

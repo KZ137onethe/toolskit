@@ -11,7 +11,7 @@ function debounceEvent() {
     debounceBox.querySelector(".content"),
   ];
 
-  let fn = debounce(() => {
+  const fn = debounce(() => {
     contentEl.innerHTML = `搜索结果为：${Math.floor(Math.random() * 9) + 1}`;
   }, 2000);
 
@@ -35,18 +35,18 @@ function debounceEvent() {
 // 节流事件
 function throttleEvent() {
   const throttleBox = document.querySelector("#throttle-box");
-  const [pointSpanEl, contentEl] = [
+  const [spanEl, contentEl] = [
     throttleBox.querySelector("span"),
     throttleBox.querySelector(".content"),
   ];
 
   const event = throttle((e) => {
-    pointSpanEl.innerHTML = `x轴坐标为 ${e.offsetX}, y轴坐标为 ${e.offsetY}`;
+    spanEl.innerHTML = `x轴坐标为 ${e.offsetX}, y轴坐标为 ${e.offsetY}`;
   }, 500);
 
   contentEl.addEventListener("mousemove", event);
   contentEl.addEventListener("mouseleave", () => {
-    pointSpanEl.innerHTML = `鼠标已离开网格区域`;
+    spanEl.innerHTML = `鼠标已离开网格区域`;
   });
 }
 
